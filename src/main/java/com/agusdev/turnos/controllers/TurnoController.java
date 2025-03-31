@@ -1,5 +1,6 @@
 package com.agusdev.turnos.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,9 @@ import com.agusdev.turnos.model.Turno;
 import com.agusdev.turnos.service.ITurnoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -22,13 +23,17 @@ public class TurnoController {
     private ITurnoService turnoService;
 
     @GetMapping("/getTurnos")
-    public List<Turno> getTurnos() {
+    public List<Turno> traeTurnos() {
         return turnoService.getTurnos();
     }
 
-    @GetMapping("/create")
-    public Turno createTurno(){
-        return Turno tu
+    @PostMapping("/create")
+    public String createTurno(  @RequestBody LocalDate fecha,
+                                @RequestBody String tratamiento,
+                                @RequestBody String dniPaciente){
+        turnoService.saveTurno(fecha, tratamiento, dniPaciente);
+
+        return "Turno creado correctamente";
     }
     
     @GetMapping("/delete/{id}")

@@ -1,5 +1,6 @@
 package com.agusdev.turnos.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,12 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<Turno> getTurnos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTurnos'");
+        return turnoRepository.findAll();
     }
 
     @Override
-    public void saveTurno(Turno turno) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationExceptions("Unimplemented method 'saveTurno'");
+    public void saveTurno(LocalDate fecha, String tratamiento, String dniPaciente) {
+        Turno turno = new Turno();
     }
 
     @Override

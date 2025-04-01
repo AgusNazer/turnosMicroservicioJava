@@ -24,20 +24,24 @@ public class TurnoService implements ITurnoService {
         return turnoRepository.findAll();
     }
 
-    // Crear usuario, consumir del servicio pacientes
     @Override
     public void saveTurno(LocalDate fecha, String tratamiento, String dniPaciente) {
-
-        // buscar el paciente en la api pacientes
-        Paciente pac = apiConsumir.getForObject("http://localhost:9001/pacientes/dniPaciente", Paciente.class);
-        String nombreCompletoPaciente = pac.getNombre()+" "+pac.getApellido();
-
-        Turno turno = new Turno();
-        turno.setFecha(fecha);
-        turno.setTratamiento(tratamiento);
-        turno.setNombreCompletoPaciente(nombreCompletoPaciente);
+        // Buscar el paciente en la API pacientes
+        Paciente pac = apiConsumir.getForObject("http://localhost:9001/pacientes/"+dniPaciente, Paciente.class);
+        
+        // Verificar si se encontró el paciente
+        if (pac != null) {
+            String nombreCompletoPaciente = pac.getNombre() + " " + pac.getApellido();
     
-        turnoRepository.save(turno);
+            Turno turno = new Turno();
+            turno.setFecha(fecha);
+            turno.setTratamiento(tratamiento);
+            turno.setNombreCompletoPaciente(nombreCompletoPaciente);
+        
+            turnoRepository.save(turno);
+        } else {
+            throw new RuntimeException("No se encontró un paciente con el DNI: " + dniPaciente);
+        }
     }
 
     @Override

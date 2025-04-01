@@ -9,7 +9,7 @@ public interface ITurnoService {
 
     public List<Turno> getTurnos();
 
-    void saveTurno(LocalDate fecha, String tratamiento, String dniPaciente);
+    public void saveTurno(LocalDate fecha, String tratamiento, String dniPaciente);
 
     public void editTurno(Long id, Turno turno);
 

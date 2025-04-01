@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agusdev.turnos.TurnoDTO.TurnoDTO;
 import com.agusdev.turnos.model.Turno;
 import com.agusdev.turnos.service.ITurnoService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +27,10 @@ public class TurnoController {
     public List<Turno> traeTurnos() {
         return turnoService.getTurnos();
     }
-
+    // crear un nuevo turno
     @PostMapping("/create")
-    public String createTurno(  @RequestBody LocalDate fecha,
-                                @RequestBody String tratamiento,
-                                @RequestBody String dniPaciente){
-        turnoService.saveTurno(fecha, tratamiento, dniPaciente);
+    public String createTurno(@RequestBody TurnoDTO turno){ // no recibimos todos los parametros, sino que recibimos el dto con los parametros necesarios nada mas
+        turnoService.saveTurno(turno.getFecha(), turno.getTratamiento(), turno.getDniPaciente());
 
         return "Turno creado correctamente";
     }

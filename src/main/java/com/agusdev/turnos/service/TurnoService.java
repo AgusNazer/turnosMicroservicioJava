@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.agusdev.turnos.model.Paciente;
 import com.agusdev.turnos.model.Turno;
 import com.agusdev.turnos.repository.ITurnoRepository;
 
@@ -15,6 +17,8 @@ public class TurnoService implements ITurnoService {
     @Autowired
     private ITurnoRepository turnoRepository;
 
+    @Autowired RestTemplate apiConsumir;
+
     @Override
     public List<Turno> getTurnos() {
         return turnoRepository.findAll();
@@ -23,10 +27,15 @@ public class TurnoService implements ITurnoService {
     // Crear usuario, consumir del servicio pacientes
     @Override
     public void saveTurno(LocalDate fecha, String tratamiento, String dniPaciente) {
+
+        // buscar el paciente en la api pacientes
+        Paciente pac = apiConsumir.getForObject("http://localhost:9001/pacientes/dniPaciente", Paciente.class);
+        String nombreCompletoPaciente = pac.getNombre()+" "+pac.getApellido();
+
         Turno turno = new Turno();
         turno.setFecha(fecha);
         turno.setTratamiento(tratamiento);
-        // turno.setNombreCompletoPaciente();
+        turno.setNombreCompletoPaciente(nombreCompletoPaciente);
     
         turnoRepository.save(turno);
     }
